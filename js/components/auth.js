@@ -3,9 +3,10 @@ import { showToast } from '../utils/toast.js';
 
 export function initAuth() {
     // Переключение табов
-    document.querySelectorAll('.auth-tab').forEach(tab => {
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             const tabName = tab.dataset.tab;
             document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
@@ -34,7 +35,15 @@ export function initAuth() {
             return;
         }
         
-        await registerUser(email, nickname, name, password, bio);
+        const success = await registerUser(email, nickname, name, password, bio);
+        if (success) {
+            // Очищаем поля
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regNickname').value = '';
+            document.getElementById('regName').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regBio').value = '';
+        }
     };
     
     // Вход
