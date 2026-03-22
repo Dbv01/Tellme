@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/fi
 import { getUserData } from './services/firestore.js';
 import { initAuth } from './components/auth.js';
 import { initChats } from './components/chats.js';
-import { initChat, openChatScreen } from './components/chat.js';
+import { initChat } from './components/chat.js';
 import { initProfile, initProfileModal } from './components/profile.js';
 import { initSearch } from './components/search.js';
 
@@ -71,8 +71,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('chatScreen').classList.remove('active');
         document.getElementById('profileScreen').classList.remove('active');
         currentUser = null;
+        window.currentUser = null;
+        window.currentChatPartner = null;
     }
 });
-
-// Экспортируем для использования в других модулях
-export { currentUser };
