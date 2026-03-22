@@ -7,12 +7,13 @@ let currentUser = null;
 
 export function initSearch(user) {
     currentUser = user;
+    window.currentUser = user;
     
     document.getElementById('searchInput').addEventListener('input', async (e) => {
         const results = await searchUsers(currentUser.uid, e.target.value);
         const container = document.getElementById('searchResults');
         if (results.length === 0) {
-            container.innerHTML = '<div class="empty-state">Пользователи не найдены</div>';
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-user-slash"></i><p>Пользователи не найдены</p></div>';
             return;
         }
         container.innerHTML = '';
@@ -29,7 +30,7 @@ export function initSearch(user) {
             div.onclick = async () => {
                 const chat = await getOrCreatePrivateChat(currentUser.uid, user.uid);
                 const fullChat = { ...chat, partner: user };
-                openChatScreen(fullChat, currentUser);
+                await openChatScreen(fullChat, currentUser);
                 document.getElementById('searchScreen').classList.remove('active');
                 document.getElementById('chatScreen').classList.add('active');
             };
