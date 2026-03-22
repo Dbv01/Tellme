@@ -1,4 +1,4 @@
-import { listenToChats, listenToMessages, markAsRead } from '../services/chat.js';
+import { listenToChats, markAsRead } from '../services/chat.js';
 import { getUserById } from '../services/firestore.js';
 import { escapeHtml, formatLastSeen } from '../utils/helpers.js';
 import { openChatScreen } from './chat.js';
@@ -6,6 +6,7 @@ import { showUserProfileModal } from './profile.js';
 
 let currentUser = null;
 let unsubscribeChats = null;
+let chatsData = {};
 
 export function initChats(user) {
     currentUser = user;
@@ -23,21 +24,10 @@ function loadChats() {
             if (partner) {
                 chat.partner = partner;
                 chat.name = partner.name;
+                enrichedChats.push(chat);
             }
-            
-            // Получаем последнее сообщение
-            let lastMessage = null;
-            let unsubscribe = listenToMessages(chat.id, (messages) => {
-                if (messages.length > 0) {
-                    lastMessage = messages[messages.length - 1];
-                    chat.lastMessage = lastMessage.text || (lastMessage.file ? "📎 Файл" : "");
-                    chat.lastTime = lastMessage.time;
-                }
-                unsubscribe();
-            });
-            
-            enrichedChats.push(chat);
         }
+        chatsData = enrichedChats;
         renderChatsList(enrichedChats);
     });
 }
@@ -45,7 +35,7 @@ function loadChats() {
 function renderChatsList(chats) {
     const container = document.getElementById('chatsList');
     if (!chats.length) {
-        container.innerHTML = '<div class="empty-state">Чатов пока нет<br>Найдите пользователей через поиск</div>';
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i><p>Чатов пока нет</p><span>Найдите пользователей через поиск</span></div>';
         return;
     }
     container.innerHTML = '';
@@ -75,4 +65,12 @@ function renderChatsList(chats) {
         
         container.appendChild(div);
     });
+}
+
+// Обновить список чатов (вызывается после отправки сообщения)
+export function refreshChats() {
+    if (unsubscribeChats) {
+        unsubscribeChats();
+        loadChats();
+    }
 }
