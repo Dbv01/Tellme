@@ -2,11 +2,13 @@ import { updateUserProfile, getUserById } from '../services/firestore.js';
 import { logoutUser } from '../services/auth.js';
 import { formatLastSeen, escapeHtml } from '../utils/helpers.js';
 import { showToast } from '../utils/toast.js';
+import { openChatWithUser } from './chat.js';
 
 let currentUser = null;
 
 export function initProfile(user) {
     currentUser = user;
+    window.currentUser = user;
     updateProfileUI();
     
     document.getElementById('editProfileBtn').onclick = async () => {
@@ -77,11 +79,12 @@ export function showUserProfileModal(user) {
     
     document.getElementById('modalStartChatBtn').onclick = async () => {
         document.getElementById('userProfileModal').style.display = 'none';
-        const { getOrCreatePrivateChat } = await import('../services/chat.js');
-        const { openChatScreen } = await import('./chat.js');
-        const chat = await getOrCreatePrivateChat(currentUser.uid, user.uid);
-        const fullChat = { ...chat, partner: user };
-        openChatScreen(fullChat, currentUser);
+        if (window.currentUser) {
+            await openChatWithUser(user, window.currentUser);
+            // Переключаем экран на чат
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('chatScreen').classList.add('active');
+        }
     };
 }
 
