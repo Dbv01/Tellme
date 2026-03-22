@@ -9,46 +9,76 @@
 </head>
 <body>
 <div id="app">
-    <!-- Экран авторизации -->
+    <!-- ========== ЭКРАН АВТОРИЗАЦИИ ========== -->
     <div id="authScreen" class="screen active">
         <div class="auth-container">
             <div class="auth-logo">
                 <div class="logo-circle">T</div>
                 <h1>Tellme</h1>
             </div>
-            <div class="auth-tabs">
-                <div class="auth-tab active" data-tab="login">Вход</div>
-                <div class="auth-tab" data-tab="register">Регистрация</div>
-            </div>
-            <div id="loginForm" class="auth-form active">
-                <input type="email" id="loginEmail" placeholder="Email">
-                <input type="password" id="loginPassword" placeholder="Пароль">
-                <button id="loginBtn">Войти</button>
-            </div>
-            <div id="registerForm" class="auth-form">
-                <input type="email" id="regEmail" placeholder="Email">
-                <input type="text" id="regNickname" placeholder="Никнейм">
-                <input type="text" id="regName" placeholder="Ваше имя">
-                <input type="password" id="regPassword" placeholder="Пароль (мин. 6 символов)">
-                <input type="text" id="regBio" placeholder="О себе">
-                <button id="registerBtn">Зарегистрироваться</button>
+            
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Вход</button>
+                    <button class="auth-tab" data-tab="register">Регистрация</button>
+                </div>
+
+                <div id="loginForm" class="auth-form active">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="loginEmail" placeholder="Email">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="loginPassword" placeholder="Пароль">
+                    </div>
+                    <button id="loginBtn" class="auth-btn">Войти</button>
+                </div>
+
+                <div id="registerForm" class="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="regEmail" placeholder="Email">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="regNickname" placeholder="Никнейм">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="text" id="regName" placeholder="Ваше имя">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="regPassword" placeholder="Пароль (мин. 6 символов)">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-info-circle"></i>
+                        <input type="text" id="regBio" placeholder="О себе (необязательно)">
+                    </div>
+                    <button id="registerBtn" class="auth-btn">Создать аккаунт</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Экран чатов -->
+    <!-- ========== ЭКРАН ЧАТОВ ========== -->
     <div id="chatsScreen" class="screen">
         <div class="header">
             <h2><span class="logo-icon">T</span> Чаты</h2>
-            <button id="searchBtn"><i class="fas fa-search"></i></button>
-            <button id="profileBtn"><i class="fas fa-user-circle"></i></button>
+            <button id="searchBtn" class="header-btn"><i class="fas fa-search"></i></button>
+            <button id="profileBtn" class="header-btn"><i class="fas fa-user-circle"></i></button>
         </div>
         <div id="chatsList" class="chats-list">
-            <div class="empty-state">Чатов пока нет</div>
+            <div class="empty-state">
+                <i class="fas fa-comments"></i>
+                <p>Чатов пока нет</p>
+                <span>Найдите пользователей через поиск</span>
+            </div>
         </div>
     </div>
 
-    <!-- Экран поиска -->
+    <!-- ========== ЭКРАН ПОИСКА ========== -->
     <div id="searchScreen" class="screen">
         <div class="header">
             <button class="back-btn" id="backFromSearch"><i class="fas fa-arrow-left"></i></button>
@@ -63,25 +93,25 @@
         <div id="searchResults" class="search-results"></div>
     </div>
 
-    <!-- Экран чата -->
+    <!-- ========== ЭКРАН ЧАТА ========== -->
     <div id="chatScreen" class="screen">
         <div class="header">
             <button class="back-btn" id="backToChats"><i class="fas fa-arrow-left"></i></button>
-            <div style="flex:1; cursor: pointer;" id="chatProfileBtn">
-                <div id="chatTitleName" style="font-weight:bold;"></div>
-                <div id="chatStatus" style="font-size:0.7rem;"></div>
+            <div class="chat-header-info" id="chatProfileBtn">
+                <div id="chatTitleName"></div>
+                <div id="chatStatus"></div>
             </div>
         </div>
         <div id="messagesContainer" class="messages-container"></div>
         <div class="input-area">
             <button id="attachFileBtn"><i class="fas fa-paperclip"></i></button>
             <input type="text" id="messageInput" placeholder="Сообщение...">
-            <button id="sendMsgBtn"><i class="fas fa-arrow-up"></i></button>
+            <button id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>
         </div>
         <input type="file" id="fileInput" style="display:none" multiple>
     </div>
 
-    <!-- Экран профиля -->
+    <!-- ========== ЭКРАН ПРОФИЛЯ ========== -->
     <div id="profileScreen" class="screen">
         <div class="header">
             <button class="back-btn" id="backFromProfile"><i class="fas fa-arrow-left"></i></button>
@@ -106,21 +136,20 @@
         </div>
     </div>
 
-    <!-- Модалка профиля пользователя -->
+    <!-- ========== МОДАЛКА ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ ========== -->
     <div id="userProfileModal" class="modal" style="display:none;">
         <div class="modal-content">
-            <div class="profile-avatar" id="modalUserAvatar" style="width:80px; height:80px; margin:0 auto;"></div>
-            <h3 id="modalUserName" style="margin-top:12px;"></h3>
-            <p id="modalUserEmail" style="color:#888; font-size:0.8rem;"></p>
-            <p id="modalUserBio" style="color:#aaa; margin:4px 0;"></p>
-            <p id="modalUserStatus" style="font-size:0.8rem;"></p>
+            <div class="profile-avatar" id="modalUserAvatar"></div>
+            <h3 id="modalUserName"></h3>
+            <p id="modalUserEmail"></p>
+            <p id="modalUserBio"></p>
+            <p id="modalUserStatus"></p>
             <button id="modalStartChatBtn" class="start-chat-btn">Написать сообщение</button>
             <button id="closeModalBtn">Закрыть</button>
         </div>
     </div>
 </div>
 
-<!-- Подключаем модули -->
 <script type="module" src="js/firebase-config.js"></script>
 <script type="module" src="js/utils/toast.js"></script>
 <script type="module" src="js/utils/helpers.js"></script>
